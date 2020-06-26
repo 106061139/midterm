@@ -6,7 +6,7 @@ import time
 
 waitTime = 0.1
 
-songs=np.array([[
+info=np.array([[
     261, 261, 392, 392, 440, 440, 392,
 
     349, 349, 330, 330, 294, 294, 261,
@@ -51,9 +51,8 @@ songs=np.array([[
     0, 0, 0, 0, 0, 0, 0,
 
     0, 0, 0, 0, 0, 0, 0, 
-    ]
-])
-notes=np.array([[1, 1, 1, 1, 1, 1, 2,
+    ],
+    [[1, 1, 1, 1, 1, 1, 2,
 
     1, 1, 1, 1, 1, 1, 2,
 
@@ -95,12 +94,13 @@ notes=np.array([[1, 1, 1, 1, 1, 1, 2,
 
     1, 1, 1, 1, 1, 1, 1]
     
-    ])
+    ]
+])
+notes=np.array()
+N=49
 # output formatter
-songs=np.reshape(songs,147)
-notes=np.reshape(notes,147)
-table=np.concatenate([songs,notes])
-formatter = lambda x: "%03.0f" % x
+info=np.reshape(info,6*N)
+formatter = lambda x: "%.3f" % x
 # send the waveform table to K66F
 
 serdev = '/dev/ttyACM0'
@@ -109,13 +109,11 @@ s = serial.Serial(serdev)
 
 print("Sending signal ...")
 
-for data in table:
-#  print(data)
+for data in info:
 
   s.write(bytes(formatter(data), 'UTF-8'))
 
   time.sleep(waitTime)
-
 s.close()
 
 print("Signal sended")
